@@ -17,6 +17,10 @@ public final class AppTheme {
     public static final Color TEXT_MAIN  = Color.decode("#dfe6e9"); // teks utama: abu terang
     public static final Color TEXT_LIGHT = Color.WHITE;             // teks di atas kartu berwarna
     public static final Color GOLD       = Color.decode("#fdcb6e"); // aksen untuk karakter level tinggi
+
+    public static final Color BG_STATUS = Color.decode("#0d0d1a");
+    public static final Color TEXT_MUTED = Color.decode("#a0a0b0");
+
     public static final int HIGH_LEVEL_THRESHOLD = 5;
 
     // ---------- Font ----------

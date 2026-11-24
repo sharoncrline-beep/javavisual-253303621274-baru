@@ -104,6 +104,8 @@ public class Main {
         guiManager.addCharacter(new Character("Gatotkaca", CharacterType.WARRIOR, 7));
         guiManager.addCharacter(new Character("Morgana", CharacterType.MAGE, 1));
         guiManager.addCharacter(new Character("Robin Hood", CharacterType.ARCHER, 6));
+        guiManager.addCharacter(new Character("Bima", CharacterType.WARRIOR, 8));
+        guiManager.addCharacter(new Character("Srikandi", CharacterType.ARCHER, 2));
 
         SwingUtilities.invokeLater(() -> {
         MainWindow window = new MainWindow(

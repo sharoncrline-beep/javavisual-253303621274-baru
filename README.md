@@ -2,39 +2,61 @@
 
 ## Deskripsi
 
-Pada AP13 ini, dilakukan penyempurnaan tampilan aplikasi Character Manager dari versi v0.3 menjadi v0.4 dengan menerapkan konsep centralized theming. Pengaturan warna, font, dan border dipusatkan ke dalam class AppTheme agar tampilan lebih konsisten dan mudah dikelola. Tampilan kartu karakter juga diperbarui dengan warna berdasarkan role, tooltip informasi karakter, serta penekanan karakter dengan level tinggi. Selain itu, dilakukan penambahan beberapa properti antarmuka untuk meningkatkan kejelasan informasi dan memberikan tampilan yang lebih interaktif.
+Pada AP16, aplikasi Character Manager dikembangkan menggunakan BorderLayout sebagai layout utama yang membagi tampilan menjadi empat area, yaitu NORTH, CENTER, EAST, dan SOUTH. Panel NORTH berisi header dan panel statistik tambahan menggunakan BorderLayout dan GridLayout 2x2, panel CENTER menampilkan daftar karakter di dalam JScrollPane, panel EAST menampilkan legenda role dengan BoxLayout, dan panel SOUTH menampilkan status aplikasi di kiri serta versi v0.5 di kanan. Panel statistik dipilih agar informasi jumlah karakter dan role dapat dilihat secara ringkas dan terstruktur, sedangkan FlowLayout ditolak untuk panel statistik karena susunannya tidak menjamin posisi empat informasi yang konsisten. Pengujian resize dilakukan pada ukuran awal, jendela yang dilebarkan, dan jendela yang dikecilkan hingga scrollbar muncul untuk mengamati kemampuan layout menyesuaikan ruang.
 
 ## Screenshot Output Program
 
-### 1. Tampilan Sebelum (v0.3)
+### 1. Jendela Normal
 
-Pada versi v0.3, aplikasi Character Manager masih menggunakan tampilan dasar sebelum penerapan tema terpusat. Tampilan karakter belum memiliki penyempurnaan visual seperti warna kartu berdasarkan role dan penekanan teks berdasarkan level. Versi ini digunakan sebagai pembanding untuk melihat perubahan tampilan setelah proses theming.
+Menampilkan tampilan Character Manager pada ukuran jendela awal setelah aplikasi dijalankan. Seluruh panel utama, panel statistik, legenda role, daftar karakter, dan status bar terlihat pada layout awal.
 
-![Output 3 Karakter](Screenshots/output-ap12-sebelum.png)
+![Jendela Normal](Screenshots/ap16-normal.png)
 
-### 2. Tampilan Setelah (v0.4)
+### 2. Jendela Dilebarkan
 
-Pada versi v0.4, tampilan aplikasi telah diperbarui menggunakan AppTheme sebagai pusat pengaturan warna, font, dan border. Setiap kartu karakter memiliki warna berdasarkan role, sedangkan karakter dengan level 5 ke atas ditampilkan menggunakan teks emas dan tebal. Tooltip juga menampilkan informasi role, HP, dan ATK, serta karakter Level 1 dibuat nonaktif sehingga terlihat lebih redup dibandingkan karakter lainnya.
+Jendela aplikasi diperlebar untuk mengamati perubahan ruang pada layout. Area CENTER menyesuaikan ruang yang tersedia, sementara panel legenda tetap berada di sisi kanan dan status bar tetap berada di bagian bawah.
 
-![Output 5 Karakter](Screenshots/output-ap13-sesudah.png)
+![Jendela Dilebarkan](Screenshots/ap16-lebar.png)
 
-## 3. Alasan Warna Disimpan di AppTheme
+### 3. Jendela Dikecilkan
 
-Warna disimpan di class AppTheme, bukan di class Character, karena warna merupakan bagian dari tampilan (presentation), bukan data inti karakter. Class Character seharusnya hanya bertanggung jawab mengelola data seperti nama, tipe, level, HP, dan attack power. Dengan memusatkan warna di AppTheme, perubahan tampilan dapat dilakukan tanpa mengubah class model. Pemisahan ini membuat kode lebih terstruktur, konsisten, dan mudah dipelihara.
+Jendela aplikasi diperkecil hingga area daftar karakter tidak dapat menampilkan seluruh data sekaligus. JScrollPane menampilkan scrollbar sehingga karakter lainnya tetap dapat diakses dengan menggulir daftar.
 
-## 4. Properti Tambahan
+![Jendela Dikecilkan](Screenshots/ap16-kecil.png)
 
-### a. Tooltip Detail HP dan ATK
+## 3. Wireframe
+NORTH — Header
+Character Manager　　　　　　　　　　　　　　　　　8 karakter
 
-Tooltip menampilkan informasi role, HP, dan ATK ketika kursor diarahkan ke kartu karakter. Properti ini dipilih agar pengguna dapat mengetahui detail karakter dengan mudah tanpa membuat tampilan utama terlalu penuh dengan informasi.
+| NORTH — Statistics (GridLayout 2×2) |
+|:---|
+| Total Character: 8　　|　Warrior: 3 |
+| Mage: 3　　　　　　　|　Average Level: 4.5 |
+EAST — Legenda Role	CENTER — Character List (JScrollPane)
+Warrior	Arjuna — Lv. 5
+Mage	Merlin — Lv. 3
+Archer	Athena — Lv. 4
+	Gatotkaca — Lv. 7
+	Morgana — Lv. 1
+	Artemis — Lv. 6
+	Bima — Lv. 8
+	Circe — Lv. 2
+	↕ Scrollbar
 
-### b. Karakter Level 1 Nonaktif
+SOUTH — Status Bar
+Total: 8 karakter | Siap　　　　　　　　　　　　　　　　　v0.5
 
-Karakter dengan Level 1 dinonaktifkan menggunakan setEnabled(false). Properti ini dipilih untuk memberikan pembeda visual terhadap karakter dengan level paling rendah sekaligus menunjukkan status karakter yang belum aktif.
+## 4. Struktur Panel dan Alasan Pemilihan Layout
 
-### 5. Google Docs – Bagian D
+Aplikasi Character Manager menggunakan BorderLayout sebagai layout utama yang membagi jendela menjadi NORTH, CENTER, EAST, dan SOUTH. Panel NORTH terdiri dari panel header dan panel statistik yang disusun menggunakan BorderLayout, sedangkan panel statistik menggunakan GridLayout 2x2 agar empat informasi statistik tersusun rapi. Panel CENTER berisi daftar karakter yang dimasukkan ke JPanel dan dibungkus JScrollPane agar daftar dapat digulir ketika ruang tampilan terbatas, sedangkan panel EAST menggunakan BoxLayout dengan arah vertikal untuk menyusun legenda role. Panel SOUTH menggunakan BorderLayout dengan teks status di kiri dan versi aplikasi v0.5 di kanan.
 
-Link Google Docs: (https://docs.google.com/document/d/1BlCfHTOSXwXQEibUCTakaCCLW-2-DNsKCJT1Lels13A/edit?tab=t.0)
+## 5. Alasan Pemilihan Layout dan Layout yang Ditolak
+
+Panel statistik dipilih sebagai panel tambahan karena memberikan informasi ringkas mengenai jumlah karakter dan distribusi role, sehingga pengguna dapat melihat informasi utama tanpa harus membaca seluruh daftar. GridLayout 2x2 dipilih karena setiap statistik memiliki ukuran kotak yang konsisten dan tersusun seimbang. FlowLayout ditolak untuk panel statistik karena susunan komponennya dapat berubah mengikuti ruang yang tersedia dan tidak menghasilkan grid tetap empat kotak. GridLayout juga tidak dipilih sebagai layout utama karena pembagian ruang yang seragam pada seluruh region tidak sesuai dengan kebutuhan daftar karakter, legenda, header, dan status bar yang memiliki fungsi serta ukuran berbeda.
+
+### 6. Google Docs – Bagian D
+
+Link Google Docs: (https://docs.google.com/document/d/1-JaRKtNzQc1xXzvFG3SHxZ1jcrnBT79qrUipQl1pBtk/edit?tab=t.0)
 
 ## Identitas Mahasiswa
 
