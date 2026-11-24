@@ -6,53 +6,68 @@ Pada AP16, aplikasi Character Manager dikembangkan menggunakan BorderLayout seba
 
 ## Screenshot Output Program
 
-### 1. Jendela Normal
+### 1. Error Nama Kosong
 
-Menampilkan tampilan Character Manager pada ukuran jendela awal setelah aplikasi dijalankan. Seluruh panel utama, panel statistik, legenda role, daftar karakter, dan status bar terlihat pada layout awal.
+Menampilkan validasi ketika pengguna mencoba menyimpan karakter tanpa mengisi nama.
 
-![Jendela Normal](Screenshots/ap16-normal.png)
+![kosong](Screenshots/ap19-kosong.png)
 
-### 2. Jendela Dilebarkan
+### 2. Error Nama Duplikat
 
-Jendela aplikasi diperlebar untuk mengamati perubahan ruang pada layout. Area CENTER menyesuaikan ruang yang tersedia, sementara panel legenda tetap berada di sisi kanan dan status bar tetap berada di bagian bawah.
+Menampilkan validasi ketika pengguna memasukkan nama karakter yang sudah terdaftar.
 
-![Jendela Dilebarkan](Screenshots/ap16-lebar.png)
+![duplikat](Screenshots/ap19-duplikat.png)
 
-### 3. Jendela Dikecilkan
+### 3. Berhasil Menambahkan Karakter
 
-Jendela aplikasi diperkecil hingga area daftar karakter tidak dapat menampilkan seluruh data sekaligus. JScrollPane menampilkan scrollbar sehingga karakter lainnya tetap dapat diakses dengan menggulir daftar.
+Menampilkan form setelah input valid dan kartu karakter baru berhasil ditambahkan ke daftar.
 
-![Jendela Dikecilkan](Screenshots/ap16-kecil.png)
+![sukses](Screenshots/ap19-sukses.png)
 
-## 3. Wireframe
-NORTH — Header
-Character Manager　　　　　　　　　　　　　　　　　8 karakter
+## 3. Mini-Challenge: Batas Level MAGE
+Aturan MAGE tidak boleh memiliki level di atas 60 ditempatkan pada Model, yaitu class Character. Validasi dilakukan di constructor dengan melempar IllegalArgumentException apabila role MAGE memiliki level lebih dari 60.
 
-| NORTH — Statistics (GridLayout 2×2) |
-|:---|
-| Total Character: 8　　|　Warrior: 3 |
-| Mage: 3　　　　　　　|　Average Level: 4.5 |
-EAST — Legenda Role	CENTER — Character List (JScrollPane)
-Warrior	Arjuna — Lv. 5
-Mage	Merlin — Lv. 3
-Archer	Athena — Lv. 4
-	Gatotkaca — Lv. 7
-	Morgana — Lv. 1
-	Artemis — Lv. 6
-	Bima — Lv. 8
-	Circe — Lv. 2
-	↕ Scrollbar
+Aturan ini ditempatkan di Model karena merupakan aturan bisnis karakter yang harus berlaku terlepas dari antarmuka yang digunakan untuk membuat karakter. View tidak perlu mengetahui aturan khusus MAGE.
 
-SOUTH — Status Bar
-Total: 8 karakter | Siap　　　　　　　　　　　　　　　　　v0.5
+Pesan kesalahan MAGE maksimal level 60 ditangkap oleh CharacterFormPanel melalui mekanisme penanganan exception yang sudah tersedia, tanpa mengubah kode form.
 
-## 4. Struktur Panel dan Alasan Pemilihan Layout
 
-Aplikasi Character Manager menggunakan BorderLayout sebagai layout utama yang membagi jendela menjadi NORTH, CENTER, EAST, dan SOUTH. Panel NORTH terdiri dari panel header dan panel statistik yang disusun menggunakan BorderLayout, sedangkan panel statistik menggunakan GridLayout 2x2 agar empat informasi statistik tersusun rapi. Panel CENTER berisi daftar karakter yang dimasukkan ke JPanel dan dibungkus JScrollPane agar daftar dapat digulir ketika ruang tampilan terbatas, sedangkan panel EAST menggunakan BoxLayout dengan arah vertikal untuk menyusun legenda role. Panel SOUTH menggunakan BorderLayout dengan teks status di kiri dan versi aplikasi v0.5 di kanan.
+## 4. Aturan Validasi Tambahan
 
-## 5. Alasan Pemilihan Layout dan Layout yang Ditolak
+### Aturan 1 — Maksimal 20 karakter dalam daftar
 
-Panel statistik dipilih sebagai panel tambahan karena memberikan informasi ringkas mengenai jumlah karakter dan distribusi role, sehingga pengguna dapat melihat informasi utama tanpa harus membaca seluruh daftar. GridLayout 2x2 dipilih karena setiap statistik memiliki ukuran kotak yang konsisten dan tersusun seimbang. FlowLayout ditolak untuk panel statistik karena susunan komponennya dapat berubah mengikuti ruang yang tersedia dan tidak menghasilkan grid tetap empat kotak. GridLayout juga tidak dipilih sebagai layout utama karena pembagian ruang yang seragam pada seluruh region tidak sesuai dengan kebutuhan daftar karakter, legenda, header, dan status bar yang memiliki fungsi serta ukuran berbeda.
+Aturan jumlah keseluruhan karakter ditempatkan pada CharacterManager, melalui method addCharacter(). Apabila jumlah karakter sudah mencapai 20, penambahan karakter baru ditolak dengan IllegalArgumentException.
+
+Alasan: batas jumlah karakter merupakan aturan pengelolaan data. Model harus mencegah penambahan data melebihi kapasitas meskipun penambahan dilakukan dari sumber selain form.
+
+Pesan kesalahan: Daftar karakter sudah penuh (maksimal 20).
+
+### Aturan 2 — Maksimal 5 karakter untuk setiap role
+
+Aturan jumlah karakter per role juga ditempatkan pada CharacterManager, melalui method countByRole() dan pengecekan pada addCharacter(). Penambahan karakter ditolak apabila role tersebut telah memiliki 5 karakter.
+
+Alasan: aturan ini menjaga distribusi koleksi karakter agar satu role tidak melebihi batas yang ditetapkan. Aturan berada pada Model supaya konsistensi data tidak hanya bergantung pada antarmuka.
+
+Pesan kesalahan menunjukkan role yang telah mencapai batas maksimal.
+
+## 4. Tabel Pengujian
+
+Hasil nyata diisi berdasarkan pengujian langsung aplikasi. Kolom hasil nyata tidak diisi dengan asumsi.
+
+| No. | Input | Hasil Diharapkan | Hasil Nyata | Lapisan yang Menangkap |
+|---|---|---|---|---|
+| 1 | MAGE level 60 | Karakter diterima | Belum diuji | Model - Character |
+| 2 | MAGE level 61 | Ditolak, maksimal level 60 | Belum diuji | Model - Character |
+| 3 | WARRIOR level 99 | Karakter diterima | Belum diuji | Model - Character |
+| 4 | Level 100 | Ditolak, level 1-99 | Belum diuji | Model - Character |
+| 5 | Total karakter 20 | Karakter ke-20 diterima | Belum diuji | Model - CharacterManager |
+| 6 | Total karakter 21 | Ditolak, maksimal 20 | Belum diuji | Model - CharacterManager |
+| 7 | Role berjumlah 5 | Karakter ke-5 diterima | Belum diuji | Model - CharacterManager |
+| 8 | Role berjumlah 6 | Ditolak, maksimal 5 per role | Belum diuji | Model - CharacterManager |
+
+## 5. Kesimpulan
+
+Mini-Challenge menunjukkan bahwa validasi khusus MAGE dapat diletakkan di Model dan pesan kesalahannya ditampilkan melalui form tanpa mengubah CharacterFormPanel. Dua aturan tambahan juga ditempatkan di Model untuk menjaga konsistensi data karakter. Pengujian dilakukan untuk memastikan input yang valid diterima dan input yang melanggar aturan ditolak oleh lapisan yang sesuai.
 
 ### 6. Google Docs – Bagian D
 
