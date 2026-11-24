@@ -29,7 +29,7 @@ public class Main {
         System.out.println("\n--- Pencarian ---");
         Character hasil = manager.findByName("Merlin");
         System.out.println(hasil != null ? "Ditemukan: " + hasil : "Tidak ditemukan");
-
+        
         Character tidakAda = manager.findByName("Zeus");
         System.out.println(tidakAda != null ? "Ditemukan: " + tidakAda : "Zeus tidak ditemukan (sesuai harapan)");
 
@@ -95,22 +95,21 @@ public class Main {
 
         // Rename karakter yang tidak ditemukan
         manager.renameCharacter("Zeus", "Poseidon");
-        // ===== AP10: Menampilkan GUI =====
+        // ===== AP12: Menampilkan GUI v0.4 =====
         CharacterManager guiManager = new CharacterManager();
 
         guiManager.addCharacter(new Character("Arjuna", CharacterType.WARRIOR, 5));
         guiManager.addCharacter(new Character("Merlin", CharacterType.MAGE, 3));
         guiManager.addCharacter(new Character("Athena", CharacterType.ARCHER, 4));
-        guiManager.addCharacter(new Character("Loki", CharacterType.MAGE, 7));
-        guiManager.addCharacter(new Character("Thor", CharacterType.WARRIOR, 8));
+        guiManager.addCharacter(new Character("Gatotkaca", CharacterType.WARRIOR, 7));
+        guiManager.addCharacter(new Character("Morgana", CharacterType.MAGE, 1));
+        guiManager.addCharacter(new Character("Robin Hood", CharacterType.ARCHER, 6));
 
-    SwingUtilities.invokeLater(() -> {
-    MainWindow window = new MainWindow(
-        guiManager.getAllCharacters(),
-        guiManager.getAverageLevel()
+        SwingUtilities.invokeLater(() -> {
+        MainWindow window = new MainWindow(
+            guiManager.getAllCharacters()
     );
-        window.setVisible(true);
-        });
-    }
-    
+     window.setVisible(true);
+    });
+}
 }
