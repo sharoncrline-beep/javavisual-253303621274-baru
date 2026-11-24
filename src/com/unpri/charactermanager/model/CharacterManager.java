@@ -2,143 +2,90 @@ package com.unpri.charactermanager.model;
 
 import java.util.ArrayList;
 
-/**
- * Mengelola koleksi Character: tambah, cari, hapus, dan statistik dasar.
- * Menerapkan Composition: CharacterManager "has-a" ArrayList<Character>.
- */
 public class CharacterManager {
 
     private ArrayList<Character> characterList;
 
+    // Aturan tambahan 1: jumlah karakter maksimal
+    private static final int MAX_CHARACTERS = 20;
+
+    // Aturan tambahan 2: jumlah maksimal karakter setiap role
+    private static final int MAX_PER_ROLE = 5;
+
     public CharacterManager() {
-        this.characterList = new ArrayList<>();   // list kosong saat manager pertama dibuat
+        this.characterList = new ArrayList<>();
     }
 
-    /**
-     * Menambahkan karakter baru ke dalam list.
-     * Menolak jika sudah ada karakter dengan nama yang sama (cek via equals()).
-     * @return true jika berhasil ditambahkan, false jika ditolak karena duplikat
-     */
-    public boolean addCharacter(Character character) {
-        if (findByName(character.getName()) != null) {   // cek dulu apakah nama sudah ada
-            System.out.println("[GAGAL] Karakter dengan nama '" + character.getName() + "' sudah ada!");
-            return false;
+    public void addCharacter(Character character) {
+
+        if (character == null) {
+            throw new IllegalArgumentException(
+                "Character tidak boleh null"
+            );
+        }
+
+        // Validasi maksimal karakter dalam daftar
+        if (characterList.size() >= MAX_CHARACTERS) {
+            throw new IllegalArgumentException(
+                "Daftar karakter sudah penuh (maksimal 20)"
+            );
+        }
+
+        // Validasi maksimal karakter pada setiap role
+        if (countByRole(character.getType()) >= MAX_PER_ROLE) {
+            throw new IllegalArgumentException(
+                "Role " + character.getType()
+                + " sudah mencapai batas maksimal 5 karakter"
+            );
         }
 
         characterList.add(character);
-        System.out.println("[SUKSES] Karakter '" + character.getName() + "' berhasil ditambahkan.");
-        return true;
     }
 
-    /**
-     * Mencari karakter berdasarkan nama.
-     * @return object Character jika ditemukan, null jika tidak ada
-     */
-    public Character findByName(String name) {
-        for (Character c : characterList) {         // iterasi setiap elemen di list
-            if (c.getName().equals(name)) {          // bandingkan ISI nama, bukan ==
-                return c;                             // langsung kembalikan referensi yang ditemukan
+    public ArrayList<Character> getAllCharacters() {
+        return characterList;
+    }
+
+    public boolean isNameTaken(String name) {
+        for (Character c : getAllCharacters()) {
+            if (c.getName().equalsIgnoreCase(name)) {
+                return true;
             }
         }
-
-        return null;                                  // tidak ditemukan setelah seluruh list diperiksa
+        return false;
     }
 
-    /**
-     * Menghapus karakter dari list berdasarkan nama.
-     * @return true jika berhasil dihapus, false jika tidak ditemukan
-     */
-    public boolean removeCharacter(String name) {
-        Character target = findByName(name);
+    public void removeCharacter(Character character) {
+        characterList.remove(character);
+    }
 
-        if (target == null) {
-            System.out.println("[GAGAL] Karakter '" + name + "' tidak ditemukan.");
-            return false;
+    public double getAverageLevel() {
+        if (characterList.isEmpty()) {
+            return 0;
         }
 
-        characterList.remove(target);                 // ArrayList.remove(Object) memakai equals() di balik layar
-        System.out.println("[SUKSES] Karakter '" + name + "' berhasil dihapus.");
-        return true;
+        int total = 0;
+
+        for (Character c : characterList) {
+            total += c.getLevel();
+        }
+
+        return (double) total / characterList.size();
     }
 
     public int getTotalCharacters() {
         return characterList.size();
     }
 
-    /**
-     * Mengembalikan SALINAN list, bukan referensi asli —
-     * agar pemanggil tidak bisa mengubah data internal manager secara langsung.
-     */
-    public ArrayList<Character> getAllCharacters() {
-        return new ArrayList<>(characterList);        // defensive copy — lihat Halaman 7 untuk eksperimen
-    }
-
-    /**
-     * Menghitung rata-rata level seluruh karakter dalam list.
-     * Jika list kosong, mengembalikan 0 agar tidak terjadi pembagian dengan nol.
-     */
-    public double getAverageLevel() {
-        if (characterList.isEmpty()) {
-            return 0;                                // list kosong, rata-rata = 0
-        }
-
-        int totalLevel = 0;
+    public int countByRole(CharacterType type) {
+        int count = 0;
 
         for (Character c : characterList) {
-            totalLevel += c.getLevel();              // menjumlahkan level setiap karakter
-        }
-
-        return (double) totalLevel / characterList.size(); // menghitung rata-rata level
-    }
-
-    /**
-     * Mencari karakter berdasarkan tipe (CharacterType).
-     * Mengembalikan list berisi seluruh karakter yang memiliki tipe sesuai.
-     * @return ArrayList<Character> berisi karakter dengan tipe yang cocok
-     */
-    public ArrayList<Character> findByType(CharacterType type) {
-        ArrayList<Character> hasil = new ArrayList<>();
-
-        for (Character c : characterList) {         // memeriksa setiap karakter dalam list
-            if (c.getType() == type) {              // membandingkan tipe karakter
-                hasil.add(c);                        // menambahkan karakter yang cocok
+            if (c.getType() == type) {
+                count++;
             }
         }
 
-        return hasil;                                 // mengembalikan list hasil pencarian
+        return count;
     }
-        /**
-     * Mengubah nama karakter dengan validasi agar tidak terjadi nama duplikat.
-     * @return true jika nama berhasil diubah, false jika validasi gagal
-     */
-    public boolean renameCharacter(String oldName, String newName) {
-        Character target = findByName(oldName);
-
-        // Validasi: karakter lama harus ditemukan
-        if (target == null) {
-            System.out.println("[GAGAL] Karakter '" + oldName + "' tidak ditemukan.");
-            return false;
-        }
-
-        // Validasi: nama baru tidak boleh kosong
-        if (newName == null || newName.trim().isEmpty()) {
-            System.out.println("[GAGAL] Nama baru tidak boleh kosong.");
-            return false;
-        }
-
-        // Validasi: nama baru tidak boleh dimiliki karakter lain
-        Character existing = findByName(newName);
-
-        if (existing != null && existing != target) {
-            System.out.println("[GAGAL] Nama '" + newName + "' sudah digunakan.");
-            return false;
-        }
-
-        target.setName(newName);
-
-        System.out.println("[SUKSES] Nama karakter '" + oldName
-                + "' berhasil diubah menjadi '" + newName + "'.");
-        return true;
-    }
-
-}   // kurung kurawal penutup class CharacterManager
+}
