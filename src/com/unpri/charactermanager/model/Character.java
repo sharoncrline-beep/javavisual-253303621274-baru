@@ -56,6 +56,10 @@ public class Character {
     public int getMana() { return mana; }
 
     // ===== SETTER: cara AMAN mengubah atribut, dengan VALIDASI =====
+    public void setName(String name) {
+        this.name = name;
+    }
+    
     public void setId(int id) {
         this.id = id;
     }
@@ -91,6 +95,15 @@ public class Character {
                ", hp=" + hitPoints +
                ", atk=" + attackPower +
                ", mana=" + mana + '}';
+    }
+     // ===== equals(): membandingkan ISI DATA, bukan alamat memori =====
+    // Dua Character dianggap "sama" jika NAMA-nya identik (case-sensitive)
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;                    // optimasi: jika memang object yang sama persis
+        if (!(obj instanceof Character)) return false;    // jika bukan Character, pasti tidak sama
+        Character other = (Character) obj;                // casting aman karena sudah dicek instanceof
+        return this.name.equals(other.name);               // bandingkan isi atribut name (String punya equals sendiri)
     }
 
 }
