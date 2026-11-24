@@ -1,51 +1,42 @@
-# Character Manager — AP10 Tugas
+# Character Manager — AP13 Tugas
 
 ## Deskripsi
 
-Pada AP10, aplikasi Character Manager dikembangkan dari program berbasis console menjadi aplikasi GUI menggunakan Java Swing. Pengembangan dilakukan dengan membuat class MainWindow pada package view yang mewarisi JFrame dan bertugas menampilkan daftar karakter dalam bentuk JLabel. Data karakter diterima dari Main melalui CharacterManager, sehingga tampilan tidak membuat data karakter sendiri, melainkan menampilkan data yang telah dikelola oleh Model. Pada mini-challenge, aplikasi juga menampilkan statistik rata-rata level karakter yang diperoleh melalui getAverageLevel() dari CharacterManager, serta menguji perubahan statistik setelah penambahan karakter baru.
-
-
-## Fitur TP5
-
--Menampilkan GUI (Graphical User Interface) menggunakan Java Swing.
--Membuat MainWindow sebagai jendela utama aplikasi yang mewarisi JFrame.
--Menampilkan daftar karakter secara dinamis menggunakan JLabel berdasarkan data dari CharacterManager.
--Menampilkan jumlah karakter pada judul jendela daftar karakter.
--Menampilkan informasi setiap karakter berupa nama, tipe, level, HP, dan Attack Power.
--Menampilkan statistik rata-rata level karakter menggunakan CharacterManager.getAverageLevel().
--Menguji perluasan data dengan menambahkan karakter baru dan memastikan statistik rata-rata level ikut berubah.
+Pada AP13 ini, dilakukan penyempurnaan tampilan aplikasi Character Manager dari versi v0.3 menjadi v0.4 dengan menerapkan konsep centralized theming. Pengaturan warna, font, dan border dipusatkan ke dalam class AppTheme agar tampilan lebih konsisten dan mudah dikelola. Tampilan kartu karakter juga diperbarui dengan warna berdasarkan role, tooltip informasi karakter, serta penekanan karakter dengan level tinggi. Selain itu, dilakukan penambahan beberapa properti antarmuka untuk meningkatkan kejelasan informasi dan memberikan tampilan yang lebih interaktif.
 
 ## Screenshot Output Program
 
-### 1. Sebelum (3 Karakter)
+### 1. Tampilan Sebelum (v0.3)
 
-Menampilkan kondisi awal GUI sebelum penambahan karakter baru, dengan 3 karakter dan rata-rata level 4.0.
+Pada versi v0.3, aplikasi Character Manager masih menggunakan tampilan dasar sebelum penerapan tema terpusat. Tampilan karakter belum memiliki penyempurnaan visual seperti warna kartu berdasarkan role dan penekanan teks berdasarkan level. Versi ini digunakan sebagai pembanding untuk melihat perubahan tampilan setelah proses theming.
 
-![Output 3 Karakter](Screenshots/output-ap10-sebelum.png)
+![Output 3 Karakter](Screenshots/output-ap12-sebelum.png)
 
-### 2. Setelah (5 Karakter)
+### 2. Tampilan Setelah (v0.4)
 
-Menampilkan GUI setelah penambahan Loki dan Thor, dengan total 5 karakter dan rata-rata level 5.4.
+Pada versi v0.4, tampilan aplikasi telah diperbarui menggunakan AppTheme sebagai pusat pengaturan warna, font, dan border. Setiap kartu karakter memiliki warna berdasarkan role, sedangkan karakter dengan level 5 ke atas ditampilkan menggunakan teks emas dan tebal. Tooltip juga menampilkan informasi role, HP, dan ATK, serta karakter Level 1 dibuat nonaktif sehingga terlihat lebih redup dibandingkan karakter lainnya.
 
-![Output 5 Karakter](Screenshots/output-ap10-setelah.png)
+![Output 5 Karakter](Screenshots/output-ap13-sesudah.png)
 
-## Aliran Data dan MVC
+## 3. Alasan Warna Disimpan di AppTheme
 
-Program dimulai dari Main yang membuat objek CharacterManager dan menambahkan data karakter ke dalamnya. CharacterManager berperan sebagai Model yang mengelola koleksi karakter serta menghitung rata-rata level menggunakan method getAverageLevel(). Selanjutnya, Main mengirimkan daftar karakter dan nilai rata-rata level kepada MainWindow melalui constructor. MainWindow berperan sebagai View yang menampilkan data karakter dan statistik rata-rata level menggunakan komponen GUI Swing, sehingga pengelolaan data dan tampilan dipisahkan sesuai konsep MVC.
+Warna disimpan di class AppTheme, bukan di class Character, karena warna merupakan bagian dari tampilan (presentation), bukan data inti karakter. Class Character seharusnya hanya bertanggung jawab mengelola data seperti nama, tipe, level, HP, dan attack power. Dengan memusatkan warna di AppTheme, perubahan tampilan dapat dilakukan tanpa mengubah class model. Pemisahan ini membuat kode lebih terstruktur, konsisten, dan mudah dipelihara.
 
-## Karakter Baru
+## 4. Properti Tambahan
 
-| Nama | Tipe | Level | Alasan Pemilihan |
-|---|---|---:|---|
-| Loki | MAGE | 7 | Karakter sihir dengan level lebih tinggi untuk menambah variasi kekuatan dan kemampuan Mage dalam koleksi. |
-| Thor | WARRIOR | 8 | Karakter petarung dengan level tinggi untuk mewakili kekuatan Warrior dan menambah variasi level karakter. |
-Penambahan Loki dan Thor meningkatkan jumlah karakter dari 3 menjadi 5. Perubahan data tersebut juga memengaruhi rata-rata level karakter dari 4.0 menjadi 5.4.
+### a. Tooltip Detail HP dan ATK
+
+Tooltip menampilkan informasi role, HP, dan ATK ketika kursor diarahkan ke kartu karakter. Properti ini dipilih agar pengguna dapat mengetahui detail karakter dengan mudah tanpa membuat tampilan utama terlalu penuh dengan informasi.
+
+### b. Karakter Level 1 Nonaktif
+
+Karakter dengan Level 1 dinonaktifkan menggunakan setEnabled(false). Properti ini dipilih untuk memberikan pembeda visual terhadap karakter dengan level paling rendah sekaligus menunjukkan status karakter yang belum aktif.
+
+### 5. Google Docs – Bagian D
+
+Link Google Docs: (https://docs.google.com/document/d/1BlCfHTOSXwXQEibUCTakaCCLW-2-DNsKCJT1Lels13A/edit?tab=t.0)
 
 ## Identitas Mahasiswa
 
 - Nama lengkap: **Sharon Caroline  Pardede**
 - NIM: **253303621274**
-
-## Analisis Desain (Bagian D)
-
-Google Docs: **(https://docs.google.com/document/d/1WVmngzsOWoh9T_Mm46afnY-ibliMNr3sEPrIgVUH9A4/edit?tab=t.0)**
