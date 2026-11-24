@@ -1,3 +1,5 @@
+import javax.swing.SwingUtilities;
+import com.unpri.charactermanager.view.MainWindow;
 import com.unpri.charactermanager.model.Character;
 import com.unpri.charactermanager.model.CharacterType;
 import com.unpri.charactermanager.model.CharacterManager;
@@ -13,6 +15,8 @@ public class Main {
         manager.addCharacter(new Character("Arjuna", CharacterType.WARRIOR, 5));
         manager.addCharacter(new Character("Merlin", CharacterType.MAGE, 3));
         manager.addCharacter(new Character("Athena", CharacterType.ARCHER, 4));
+        manager.addCharacter(new Character("Loki", CharacterType.MAGE, 7));
+        manager.addCharacter(new Character("Thor", CharacterType.WARRIOR, 8));
 
         // 2. Coba tambah DUPLIKAT nama — seharusnya DITOLAK
         System.out.println();
@@ -91,6 +95,22 @@ public class Main {
 
         // Rename karakter yang tidak ditemukan
         manager.renameCharacter("Zeus", "Poseidon");
+        // ===== AP10: Menampilkan GUI =====
+        CharacterManager guiManager = new CharacterManager();
+
+        guiManager.addCharacter(new Character("Arjuna", CharacterType.WARRIOR, 5));
+        guiManager.addCharacter(new Character("Merlin", CharacterType.MAGE, 3));
+        guiManager.addCharacter(new Character("Athena", CharacterType.ARCHER, 4));
+        guiManager.addCharacter(new Character("Loki", CharacterType.MAGE, 7));
+        guiManager.addCharacter(new Character("Thor", CharacterType.WARRIOR, 8));
+
+    SwingUtilities.invokeLater(() -> {
+    MainWindow window = new MainWindow(
+        guiManager.getAllCharacters(),
+        guiManager.getAverageLevel()
+    );
+        window.setVisible(true);
+        });
     }
     
 }

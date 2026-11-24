@@ -1,68 +1,45 @@
-# Character Manager — AP6 Tugas
+# Character Manager — AP10 Tugas
 
 ## Deskripsi
 
-Method `renameCharacter(String oldName, String newName)` merupakan method baru yang ditambahkan pada `CharacterManager` untuk mengubah nama karakter yang sudah terdaftar tanpa harus menghapus dan membuat objek karakter baru.
+Pada AP10, aplikasi Character Manager dikembangkan dari program berbasis console menjadi aplikasi GUI menggunakan Java Swing. Pengembangan dilakukan dengan membuat class MainWindow pada package view yang mewarisi JFrame dan bertugas menampilkan daftar karakter dalam bentuk JLabel. Data karakter diterima dari Main melalui CharacterManager, sehingga tampilan tidak membuat data karakter sendiri, melainkan menampilkan data yang telah dikelola oleh Model. Pada mini-challenge, aplikasi juga menampilkan statistik rata-rata level karakter yang diperoleh melalui getAverageLevel() dari CharacterManager, serta menguji perubahan statistik setelah penambahan karakter baru.
 
 
 ## Fitur TP5
 
-- Create: Menambahkan karakter ke dalam list.
-- Read: Mencari karakter berdasarkan nama dan menampilkan daftar karakter.
-- Delete: Menghapus karakter berdasarkan nama.
-- Validasi nama duplikat saat menambahkan karakter.
-- `getAverageLevel()`: Menghitung rata-rata level seluruh karakter.
-- `findByType()`: Mencari karakter berdasarkan tipe.
-- Defensive Copy: Mengembalikan salinan list karakter agar list internal tidak dapat diubah secara langsung dari luar.
-- Eksperimen Reference: Membuktikan bahwa dua variabel dapat merujuk pada objek yang sama.
-- `renameCharacter()`: Mengubah nama karakter dengan validasi.
+-Menampilkan GUI (Graphical User Interface) menggunakan Java Swing.
+-Membuat MainWindow sebagai jendela utama aplikasi yang mewarisi JFrame.
+-Menampilkan daftar karakter secara dinamis menggunakan JLabel berdasarkan data dari CharacterManager.
+-Menampilkan jumlah karakter pada judul jendela daftar karakter.
+-Menampilkan informasi setiap karakter berupa nama, tipe, level, HP, dan Attack Power.
+-Menampilkan statistik rata-rata level karakter menggunakan CharacterManager.getAverageLevel().
+-Menguji perluasan data dengan menambahkan karakter baru dan memastikan statistik rata-rata level ikut berubah.
 
 ## Screenshot Output Program
 
-### 1. Output CRUD dan Fitur Tambahan
+### 1. Sebelum (3 Karakter)
 
-Screenshot berikut menunjukkan hasil pengujian penambahan karakter, pencarian, validasi duplikat, penghapusan karakter, menampilkan karakter tersisa, perhitungan rata-rata level, pencarian berdasarkan tipe, serta pengujian list kosong.
+Menampilkan kondisi awal GUI sebelum penambahan karakter baru, dengan 3 karakter dan rata-rata level 4.0.
 
-![Output CRUD TP5](Screenshots/output-crud.png)
+![Output 3 Karakter](Screenshots/output-ap10-sebelum.png)
 
-### 2. Eksperimen Reference, Defensive Copy, dan Rename Character
+### 2. Setelah (5 Karakter)
 
-Screenshot berikut menunjukkan eksperimen Reference dengan dua variabel yang menunjuk objek yang sama, pengujian Defensive Copy, serta pengujian method `renameCharacter()` termasuk validasi nama duplikat dan karakter yang tidak ditemukan.
+Menampilkan GUI setelah penambahan Loki dan Thor, dengan total 5 karakter dan rata-rata level 5.4.
 
-![Reference dan Rename Character TP5](Screenshots/output-ap6.png)
+![Output 5 Karakter](Screenshots/output-ap10-setelah.png)
 
-## Bagian C - Method Baru
+## Aliran Data dan MVC
 
-### `renameCharacter(String oldName, String newName)`
+Program dimulai dari Main yang membuat objek CharacterManager dan menambahkan data karakter ke dalamnya. CharacterManager berperan sebagai Model yang mengelola koleksi karakter serta menghitung rata-rata level menggunakan method getAverageLevel(). Selanjutnya, Main mengirimkan daftar karakter dan nilai rata-rata level kepada MainWindow melalui constructor. MainWindow berperan sebagai View yang menampilkan data karakter dan statistik rata-rata level menggunakan komponen GUI Swing, sehingga pengelolaan data dan tampilan dipisahkan sesuai konsep MVC.
 
-Method `renameCharacter()` ditambahkan pada class `CharacterManager` untuk mengubah nama karakter yang sudah terdaftar tanpa perlu menghapus dan membuat objek karakter baru.
+## Karakter Baru
 
-Method ini menjaga Encapsulation karena proses pencarian dan perubahan nama dilakukan melalui method yang tersedia di dalam class. `CharacterManager` tidak mengekspos ArrayList internal secara langsung. Perubahan nama dilakukan melalui setter `setName()` pada objek `Character`.
-
-Validasi yang diterapkan:
-
-- Memastikan karakter dengan nama lama ditemukan.
-- Memastikan nama baru tidak kosong.
-- Memastikan nama baru tidak digunakan oleh karakter lain.
-- Perubahan hanya dilakukan jika seluruh validasi berhasil.
-
-### Rasional
-
-Method `renameCharacter()` dipilih karena mempermudah pengelolaan data karakter ketika terjadi perubahan nama. Nama karakter dapat diperbarui tanpa membuat objek baru, sehingga atribut lainnya seperti level, HP, attack power, dan mana tetap dipertahankan.
-
-Validasi bentrok nama diterapkan untuk menjaga konsistensi data dan mencegah adanya karakter dengan nama yang sama. Implementasi ini mendukung prinsip Encapsulation dalam Object-Oriented Programming (OOP).
-
-### Pengujian Method
-
-| Skenario | Hasil |
-|---|---|
-| Mengubah nama Merlin menjadi Merlin Supreme | Berhasil |
-| Mencari nama lama Merlin | Tidak ditemukan (`null`) |
-| Mencari nama baru Merlin Supreme | Ditemukan |
-| Mengubah nama menjadi nama yang sudah digunakan | Ditolak |
-| Mengubah nama karakter yang tidak ditemukan (Zeus) | Ditolak |
-
-Seluruh skenario pengujian berhasil dijalankan melalui `Main.java`.
+| Nama | Tipe | Level | Alasan Pemilihan |
+|---|---|---:|---|
+| Loki | MAGE | 7 | Karakter sihir dengan level lebih tinggi untuk menambah variasi kekuatan dan kemampuan Mage dalam koleksi. |
+| Thor | WARRIOR | 8 | Karakter petarung dengan level tinggi untuk mewakili kekuatan Warrior dan menambah variasi level karakter. |
+Penambahan Loki dan Thor meningkatkan jumlah karakter dari 3 menjadi 5. Perubahan data tersebut juga memengaruhi rata-rata level karakter dari 4.0 menjadi 5.4.
 
 ## Identitas Mahasiswa
 
@@ -71,4 +48,4 @@ Seluruh skenario pengujian berhasil dijalankan melalui `Main.java`.
 
 ## Analisis Desain (Bagian D)
 
-Google Docs: **(https://docs.google.com/document/d/1yYdo21ZE7nsQV2AhI6MQIll55f2BvhbNuB61EUNBLZk/edit?tab=t.0)**
+Google Docs: **(https://docs.google.com/document/d/1WVmngzsOWoh9T_Mm46afnY-ibliMNr3sEPrIgVUH9A4/edit?tab=t.0)**
